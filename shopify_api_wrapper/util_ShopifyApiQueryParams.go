@@ -17,7 +17,7 @@ func (p *ShopifyApiQueryParams) AsReqParams() map[string]string {
 		queryParams["fields"] = strings.Join(p.Fields, ",")
 	}
 	if p.Filters != nil {
-		queryParams["filters"] = strings.Join(p.Filters, ",")
+		queryParams["filters"] = strings.Join(p.Filters, "&")
 	}
 
 	return queryParams
