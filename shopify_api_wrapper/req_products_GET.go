@@ -12,21 +12,23 @@ type ShopifyApiGetProductsResult struct {
 }
 
 type ShopifyApiGetProductsReturn struct {
-	Body *ShopifyApiGetInventoryIdResult
+	Body *ShopifyApiGetProductsResult
 }
 
 // TODO: Figure out how to do pagination in Shopify API?
-func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetInventoryIdReturn, error) {
+// Right now we can get a maximum of 250 products out.
+// We could order them by product ID and then do calls with the filter "since_id" until the call is empty
+func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetProductsReturn, error) {
 	resp, err := GetShopifyApiBaseClient().
 		R().
 		SetQueryParams(params.AsReqParams()).
-		SetResult(ShopifyApiGetInventoryIdResult{}).
+		SetResult(ShopifyApiGetProductsResult{}).
 		Get("products.json")
 	if err != nil {
-		return ShopifyApiGetInventoryIdReturn{}, err
+		return ShopifyApiGetProductsReturn{}, err
 	}
 
-	return ShopifyApiGetInventoryIdReturn{
-		Body: resp.Result().(*ShopifyApiGetInventoryIdResult),
+	return ShopifyApiGetProductsReturn{
+		Body: resp.Result().(*ShopifyApiGetProductsResult),
 	}, nil
 }

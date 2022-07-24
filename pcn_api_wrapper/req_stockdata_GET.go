@@ -8,8 +8,8 @@ import (
 
 type PcnApiGetStockDataResult struct {
 	Results []struct {
-		Barcode string `json:"barcode"`
-		Instock int    `json:"instock"`
+		Barcode   string `json:"barcode"`
+		Available int    `json:"instock"`
 	} `json:"results"`
 }
 
