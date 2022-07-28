@@ -19,7 +19,7 @@ func HandleSyncStock() error {
 		return err
 	}
 
-	ShopifyProduts, err := shopify_api_wrapper.ShopifyApiGetProducts(shopify_api_wrapper.ShopifyApiQueryParams{
+	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts(shopify_api_wrapper.ShopifyApiQueryParams{
 		Fields:  []string{"variants"},
 		Filters: []string{"limit=250"},
 	})
@@ -27,20 +27,28 @@ func HandleSyncStock() error {
 		return err
 	}
 
-	for _, product := range ShopifyProduts.Body.Products {
+	ShopifyInventoryItems, err := shopify_api_wrapper.ShopifyApiInventoryItem_AllItems(ShopifyProducts)
+	if err != nil {
+		return err
+	}
+
+	for _, product := range ShopifyProducts.Body.Products {
 		for _, variant := range product.Variants {
+
+			isTracked := true
+
+			for _, InventoryItem := range ShopifyInventoryItems.Body.InventoryItems {
+				if InventoryItem.InventoryItemId == variant.InventoryItemId {
+
+					isTracked = InventoryItem.IsTracked
+				}
+			}
+			if !isTracked {
+
+				continue
+			}
+
 			for _, pcnProduct := range PcnProducts.Body.Results {
-				//TODO: More checks
-				//TODO: lav et udtræk omkring hvorvidt inventory bliver tracked på items
-				// https://shopify.dev/api/admin-rest/2022-07/resources/inventoryitem
-
-				if variant.Barcode == "" {
-					continue
-				}
-				if len(variant.Barcode) == 4 {
-					continue
-				}
-
 				if variant.Barcode == pcnProduct.Barcode {
 					if err := shopify_api_wrapper.SetInventoryLevel(&shopify_api_wrapper.SetInventoryLevelBody{
 						Location_id:       ShopifyInventoryId.Body.Locations[0].LocationId,
@@ -54,5 +62,6 @@ func HandleSyncStock() error {
 			}
 		}
 	}
+
 	return nil
 }

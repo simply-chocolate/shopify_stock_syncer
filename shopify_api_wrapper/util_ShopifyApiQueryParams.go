@@ -9,6 +9,8 @@ type ShopifyApiQueryParams struct {
 	Fields []string
 	// Select which filters you want to apply on the result
 	Filters []string
+	// Raw
+	RawString string
 }
 
 func (p *ShopifyApiQueryParams) AsReqParams() map[string]string {

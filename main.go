@@ -18,6 +18,7 @@ func main() {
 	err = utils.HandleSyncStock()
 	if err != nil {
 		log.Fatal(err)
+		fmt.Printf("%v", err)
 	}
 
 	fmt.Println("I'm gonna sync some stock one day.")

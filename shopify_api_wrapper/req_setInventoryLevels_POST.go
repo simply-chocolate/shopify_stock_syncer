@@ -13,7 +13,6 @@ type SetInventoryLevelBody struct {
 
 func SetInventoryLevel(body *SetInventoryLevelBody) error {
 	resp, err := GetShopifyApiBaseClient().
-		DevMode().
 		R().
 		SetBody(map[string]interface{}{
 			"location_id":       body.Location_id,
