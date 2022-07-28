@@ -6,6 +6,7 @@ import (
 	"github.com/imroc/req/v3"
 )
 
+// Returns a base client that has already logged in and been authenticated at the base url for the PCN API
 func GetPcnApiBaseClient() *req.Client {
 	return req.C().
 		SetBaseURL(os.Getenv("PCN_ADRESS")).

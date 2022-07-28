@@ -24,6 +24,9 @@ func SetInventoryLevel(body *SetInventoryLevelBody) error {
 		return err
 	}
 
+	// Sleep 10 seconds so we don't call the api more than 40 times a minute.
+	time.Sleep(10 * time.Second)
+
 	if resp.StatusCode == 429 {
 		time.Sleep(1 * time.Minute)
 	}

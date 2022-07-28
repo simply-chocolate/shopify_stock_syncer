@@ -17,6 +17,7 @@ type PcnApiGetStockDataReturn struct {
 	Body *PcnApiGetStockDataResult
 }
 
+// Calls the PCN API at endpoint stocklist to return Barcodes and available units in stock.
 func PcnApiGetStockData() (PcnApiGetStockDataReturn, error) {
 	resp, err := GetPcnApiBaseClient().
 		R().

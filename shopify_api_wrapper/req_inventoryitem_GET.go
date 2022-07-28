@@ -30,6 +30,9 @@ func ShopifyApiInventoryItem(params map[string]string) (ShopifyApiInventoryItemR
 
 }
 
+// Calls the function ShopifyApiInventoryItem repeatedly until we have gone through all products
+//
+// Returns a ShopifyApiInventoryItemReturn containing the data for all the products we've gotten out in our ShopifyApiGetProducts call.
 func ShopifyApiInventoryItem_AllItems(ShopifyProducts ShopifyApiGetProductsReturn) (ShopifyApiInventoryItemReturn, error) {
 	res := ShopifyApiInventoryItemResult{} // Create the string og Ids and use I to see if you have reached 100
 	ProductIdStringSlice := make(map[int]string)

@@ -6,6 +6,7 @@ import (
 	"pcn_stock_syncer/shopify_api_wrapper"
 )
 
+// Handles the collection of all the queries.
 func HandleSyncStock() error {
 	PcnProducts, err := pcn_api_wrapper.PcnApiGetStockData()
 	if err != nil {
@@ -21,11 +22,13 @@ func HandleSyncStock() error {
 
 	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts(shopify_api_wrapper.ShopifyApiQueryParams{
 		Fields:  []string{"variants"},
-		Filters: []string{"limit=250"},
+		Filters: []string{"limit=10"},
 	})
 	if err != nil {
 		return err
 	}
+
+	return nil
 
 	ShopifyInventoryItems, err := shopify_api_wrapper.ShopifyApiInventoryItem_AllItems(ShopifyProducts)
 	if err != nil {

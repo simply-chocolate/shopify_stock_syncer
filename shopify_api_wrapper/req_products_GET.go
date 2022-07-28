@@ -1,6 +1,7 @@
 package shopify_api_wrapper
 
-//TODO: Read up on the documentation for inserting the quantities to find out which fields we need.
+import "fmt"
+
 type ShopifyApiGetProductsResult struct {
 	Products []struct {
 		Variants []struct {
@@ -16,10 +17,12 @@ type ShopifyApiGetProductsReturn struct {
 }
 
 // TODO: Figure out how to do pagination in Shopify API?
+// https://shopify.dev/api/usage/pagination-rest
 // Right now we can get a maximum of 250 products out.
 // We could order them by product ID and then do calls with the filter "since_id" until the call is empty
 func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetProductsReturn, error) {
 	resp, err := GetShopifyApiBaseClient().
+		//DevMode().
 		R().
 		SetQueryParams(params.AsReqParams()).
 		SetResult(ShopifyApiGetProductsResult{}).
@@ -27,6 +30,7 @@ func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetProductsR
 	if err != nil {
 		return ShopifyApiGetProductsReturn{}, err
 	}
+	fmt.Println(resp.Header["Link"])
 
 	return ShopifyApiGetProductsReturn{
 		Body: resp.Result().(*ShopifyApiGetProductsResult),
