@@ -8,6 +8,17 @@ import (
 
 // Handles the collection of all the queries.
 func HandleSyncStock() error {
+
+	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts_AllPages(shopify_api_wrapper.ShopifyApiQueryParams{
+		Fields: []string{"variants"},
+		Limit:  20,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 	PcnProducts, err := pcn_api_wrapper.PcnApiGetStockData()
 	if err != nil {
 		return err
@@ -19,16 +30,6 @@ func HandleSyncStock() error {
 	if err != nil {
 		return err
 	}
-
-	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts(shopify_api_wrapper.ShopifyApiQueryParams{
-		Fields:  []string{"variants"},
-		Filters: []string{"limit=10"},
-	})
-	if err != nil {
-		return err
-	}
-
-	return nil
 
 	ShopifyInventoryItems, err := shopify_api_wrapper.ShopifyApiInventoryItem_AllItems(ShopifyProducts)
 	if err != nil {
