@@ -14,13 +14,13 @@ func ShopifyApiGetInventoryId(params ShopifyApiQueryParams) (ShopifyApiGetInvent
 	resp, err := GetShopifyApiBaseClient().
 		R().
 		SetQueryParams(params.AsReqParams()).
-		SetResult(ShopifyApiGetInventoryIdResult{}).
+		SetSuccessResult(ShopifyApiGetInventoryIdResult{}).
 		Get("locations.json")
 	if err != nil {
 		return ShopifyApiGetInventoryIdReturn{}, err
 	}
 
 	return ShopifyApiGetInventoryIdReturn{
-		Body: resp.Result().(*ShopifyApiGetInventoryIdResult),
+		Body: resp.SuccessResult().(*ShopifyApiGetInventoryIdResult),
 	}, nil
 }

@@ -18,14 +18,14 @@ func ShopifyApiInventoryItem(params map[string]string) (ShopifyApiInventoryItemR
 	resp, err := GetShopifyApiBaseClient().
 		R().
 		SetQueryParams(params).
-		SetResult(ShopifyApiInventoryItemResult{}).
+		SetSuccessResult(ShopifyApiInventoryItemResult{}).
 		Get("inventory_items.json")
 	if err != nil {
 		return ShopifyApiInventoryItemReturn{}, err
 	}
 
 	return ShopifyApiInventoryItemReturn{
-		Body: resp.Result().(*ShopifyApiInventoryItemResult),
+		Body: resp.SuccessResult().(*ShopifyApiInventoryItemResult),
 	}, nil
 
 }

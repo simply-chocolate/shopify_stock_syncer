@@ -14,6 +14,10 @@ type ShopifyApiQueryParams struct {
 	Limit int
 	// Holds the predefined pageinfo from Shopify
 	PageInfo string
+	// Checks the status of the product (active, draft)
+	Status string
+	// Returns only the products with the given ids
+	Ids []string
 }
 
 func (p *ShopifyApiQueryParams) AsReqParams() map[string]string {
@@ -29,6 +33,12 @@ func (p *ShopifyApiQueryParams) AsReqParams() map[string]string {
 	}
 	if p.PageInfo != "" {
 		queryParams["page_info"] = p.PageInfo
+	}
+	if p.Status != "" {
+		queryParams["status"] = p.Status
+	}
+	if p.Ids != nil {
+		queryParams["ids"] = strings.Join(p.Ids, ",")
 	}
 
 	return queryParams

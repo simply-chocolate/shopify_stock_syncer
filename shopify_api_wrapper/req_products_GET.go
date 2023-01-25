@@ -10,6 +10,7 @@ type ShopifyApiGetProductsResult struct {
 	Products []struct {
 		Variants []struct {
 			Barcode           string `json:"barcode"`
+			Sku               string `json:"sku"`
 			InventoryItemId   int    `json:"inventory_item_id"`
 			InventoryQuantity int    `json:"inventory_quantity"`
 		} `json:"variants"`
@@ -23,17 +24,17 @@ type ShopifyApiGetProductsReturn struct {
 
 func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetProductsReturn, error) {
 	resp, err := GetShopifyApiBaseClient().
-		//DevMode().
+		DevMode().
 		R().
 		SetQueryParams(params.AsReqParams()).
-		SetResult(ShopifyApiGetProductsResult{}).
+		SetSuccessResult(ShopifyApiGetProductsResult{}).
 		Get("products.json")
 	if err != nil {
 		return ShopifyApiGetProductsReturn{}, err
 	}
 
 	return ShopifyApiGetProductsReturn{
-		Body:            resp.Result().(*ShopifyApiGetProductsResult),
+		Body:            resp.SuccessResult().(*ShopifyApiGetProductsResult),
 		ResponseHeaders: resp.Header,
 	}, nil
 }

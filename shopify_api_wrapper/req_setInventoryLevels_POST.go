@@ -32,7 +32,7 @@ func SetInventoryLevel(body *SetInventoryLevelBody) error {
 	}
 
 	if resp.StatusCode == 422 {
-		return fmt.Errorf("%s", resp.Result())
+		return fmt.Errorf("%s", resp.SuccessResult())
 	}
 
 	return nil

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"pcn_stock_syncer/utils"
 
@@ -14,6 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+	fmt.Printf("%v Started the Script \n", time.Now().Format("2006-01-02 15:04:05"))
 
 	err = utils.HandleSyncStock()
 	if err != nil {
@@ -21,5 +23,6 @@ func main() {
 		fmt.Printf("%v", err)
 	}
 
-	fmt.Println("I'm gonna sync some stock one day.")
+	fmt.Printf("%v Success \n", time.Now().Format("2006-01-02 15:04:05"))
+
 }
