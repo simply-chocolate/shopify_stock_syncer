@@ -3,6 +3,7 @@ module pcn_stock_syncer
 go 1.19
 
 require (
+	github.com/atc0005/go-teams-notify/v2 v2.7.0
 	github.com/imroc/req/v3 v3.31.0
 	github.com/joho/godotenv v1.4.0
 )

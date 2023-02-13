@@ -20,7 +20,6 @@ func main() {
 	err = utils.HandleSyncStock()
 	if err != nil {
 		log.Fatal(err)
-		fmt.Printf("%v", err)
 	}
 
 	fmt.Printf("%v Success \n", time.Now().Format("2006-01-02 15:04:05"))

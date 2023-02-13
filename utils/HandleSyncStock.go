@@ -1,15 +1,16 @@
 package utils
 
 import (
-	"fmt"
 	"pcn_stock_syncer/shopify_api_wrapper"
+	"pcn_stock_syncer/teams_notifier"
+	"time"
 )
 
 // TODO: Take a look at all the endpoints again and double check if everything is done correctly.
 func HandleSyncStock() error {
 
 	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts_AllPages(shopify_api_wrapper.ShopifyApiQueryParams{
-		Fields: []string{"variants"},
+		Fields: []string{"id, variants"},
 		Status: "active",
 		//Ids:    []string{"6748027912399"},
 		Limit: 20,
@@ -30,41 +31,39 @@ func HandleSyncStock() error {
 		return err
 	}
 
-	ShopifyInventoryItems, err := shopify_api_wrapper.ShopifyApiInventoryItem_AllItems(ShopifyProducts)
-	if err != nil {
-		return err
-	}
-
 	// Iterate over all products from shopify and all variants from each product.
 	for _, product := range ShopifyProducts.Body.Products {
 		for _, variant := range product.Variants {
-			var isTracked bool
+			time.Sleep(2 * time.Second)
 
-			// Check if the inventory of this variant is tracked in shopify.
-			for _, InventoryItem := range ShopifyInventoryItems.Body.InventoryItems {
-				if InventoryItem.InventoryItemId == variant.InventoryItemId {
+			isTracked, err := ShopifyApiGetInventoryItem(variant.InventoryItemId)
+			if err != nil {
 
-					isTracked = InventoryItem.IsTracked
-				}
+				teams_notifier.SendInventoryItemErrorToTeams(variant.Barcode, product.Id)
+				continue
 			}
 			if !isTracked {
+				// TODO: vi skal lave et eller andet tjek her på om det burde være tracked eller ej.
 				continue
 			}
 
-			product, exists := PcnProducts[variant.Barcode]
+			pcnAvailableQuantity, exists := PcnProducts[variant.Barcode]
 			if !exists {
-				fmt.Printf("product with barcode %s does not exist in pcn\n", variant.Barcode)
-				// TODO: Implement the teams error handling. and make this send an error to teams.
+				teams_notifier.SendNotInPCNErrorToTeams(variant.Barcode, product.Id)
 				continue
-
 			} else {
+				if pcnAvailableQuantity == variant.InventoryQuantity {
+					continue
+				}
+
 				if err := shopify_api_wrapper.SetInventoryLevel(&shopify_api_wrapper.SetInventoryLevelBody{
 					Location_id:       ShopifyInventoryId.Body.Locations[0].LocationId,
 					Inventory_item_id: variant.InventoryItemId,
-					Available:         product,
+					Available:         pcnAvailableQuantity,
 				}); err != nil {
-					fmt.Printf("error setting inventory lvl for item: %s\n", variant.Barcode)
-					return err
+
+					teams_notifier.SendUpdateInventoryLevelErrorToTeams(variant.Barcode, product.Id, pcnAvailableQuantity, err)
+					continue
 				}
 			}
 		}

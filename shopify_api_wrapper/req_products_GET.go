@@ -8,6 +8,7 @@ import (
 
 type ShopifyApiGetProductsResult struct {
 	Products []struct {
+		Id       int `json:"id"`
 		Variants []struct {
 			Barcode           string `json:"barcode"`
 			Sku               string `json:"sku"`
@@ -24,7 +25,7 @@ type ShopifyApiGetProductsReturn struct {
 
 func ShopifyApiGetProducts(params ShopifyApiQueryParams) (ShopifyApiGetProductsReturn, error) {
 	resp, err := GetShopifyApiBaseClient().
-		DevMode().
+		//DevMode().
 		R().
 		SetQueryParams(params.AsReqParams()).
 		SetSuccessResult(ShopifyApiGetProductsResult{}).
