@@ -1,6 +1,7 @@
 package teams_notifier
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/atc0005/go-teams-notify/v2/messagecard"
 )
 
-func SendUpdateInventoryLevelErrorToTeams(barcode string, productId int, quantityPCN int, err error) {
+func SendUpdateInventoryLevelErrorToTeams(barcode string, productId json.Number, quantityPCN int, err error) {
 	client := goteamsnotify.NewTeamsClient()
 	webhook := os.Getenv("TEAMS_WEBHOOK_URL")
 

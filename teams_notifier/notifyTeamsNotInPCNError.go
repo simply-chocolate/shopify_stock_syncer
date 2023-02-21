@@ -1,6 +1,7 @@
 package teams_notifier
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/atc0005/go-teams-notify/v2/messagecard"
 )
 
-func SendNotInPCNErrorToTeams(barcode string, productId int) {
+func SendNotInPCNErrorToTeams(barcode string, productId json.Number) {
 	client := goteamsnotify.NewTeamsClient()
 	webhook := os.Getenv("TEAMS_WEBHOOK_URL")
 

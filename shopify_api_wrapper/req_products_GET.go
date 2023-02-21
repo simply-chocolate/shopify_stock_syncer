@@ -1,6 +1,7 @@
 package shopify_api_wrapper
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 	"strings"
@@ -8,7 +9,7 @@ import (
 
 type ShopifyApiGetProductsResult struct {
 	Products []struct {
-		Id       int `json:"id"`
+		Id       json.Number `json:"id"`
 		Variants []struct {
 			Barcode           string `json:"barcode"`
 			Sku               string `json:"sku"`
