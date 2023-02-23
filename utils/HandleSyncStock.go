@@ -12,7 +12,8 @@ func HandleSyncStock() error {
 	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts_AllPages(shopify_api_wrapper.ShopifyApiQueryParams{
 		Fields: []string{"id, variants"},
 		//Ids:    []string{"6748027912399"},
-		Limit: 20,
+		Status: "active",
+		Limit:  20,
 	})
 	if err != nil {
 		return err
