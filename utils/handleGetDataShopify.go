@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"pcn_stock_syncer/shopify_api_wrapper"
 )
 
 // Gets the inventory from the variant id.
-func ShopifyApiGetInventoryItem(variantInventoryItemId int) (bool, error) {
+func ShopifyApiGetInventoryItem(variantInventoryItemId json.Number) (bool, error) {
 	ShopifyInventoryItem, err := shopify_api_wrapper.ShopifyApiInventoryItem(map[string]string{
 		"ids": fmt.Sprint(variantInventoryItemId),
 	})

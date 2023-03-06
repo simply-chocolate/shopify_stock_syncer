@@ -11,10 +11,10 @@ type ShopifyApiGetProductsResult struct {
 	Products []struct {
 		Id       json.Number `json:"id"`
 		Variants []struct {
-			Barcode           string `json:"barcode"`
-			Sku               string `json:"sku"`
-			InventoryItemId   int    `json:"inventory_item_id"`
-			InventoryQuantity int    `json:"inventory_quantity"`
+			Barcode           string      `json:"barcode"`
+			Sku               string      `json:"sku"`
+			InventoryItemId   json.Number `json:"inventory_item_id"`
+			InventoryQuantity int         `json:"inventory_quantity"`
 		} `json:"variants"`
 	} `json:"products"`
 }

@@ -1,13 +1,14 @@
 package shopify_api_wrapper
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
 
 type SetInventoryLevelBody struct {
 	Location_id       int64
-	Inventory_item_id int
+	Inventory_item_id json.Number
 	Available         int
 }
 
