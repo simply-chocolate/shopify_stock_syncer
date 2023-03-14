@@ -9,7 +9,7 @@ import (
 	"github.com/atc0005/go-teams-notify/v2/messagecard"
 )
 
-func SendInventoryItemErrorToTeams(barcode string, productId json.Number) {
+func SendInventoryItemErrorToTeams(barcode string, productId json.Number, err error) {
 	client := goteamsnotify.NewTeamsClient()
 	webhook := os.Getenv("TEAMS_WEBHOOK_URL")
 
@@ -18,7 +18,7 @@ func SendInventoryItemErrorToTeams(barcode string, productId json.Number) {
 	card.Text = fmt.Sprintf("Script failed to find an inventory item.<BR/>"+
 		"**Product Barcode**: %v<BR/>"+
 		"**Link**: https://simply-chocolate-copenhagen.myshopify.com/admin/products/%v<BR/>"+
-		"**Error**: Could not find inventory item from the product variant", barcode, productId)
+		"**Error**: Could not find inventory item from the product variant. Error: %v", barcode, productId, err)
 
 	if err := client.Send(webhook, card); err != nil {
 		fmt.Println("SendOrderErrorToTeams failed to send the error.", err)

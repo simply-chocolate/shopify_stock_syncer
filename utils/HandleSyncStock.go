@@ -40,8 +40,9 @@ func HandleSyncStock() error {
 			isTracked, err := ShopifyApiGetInventoryItem(variant.InventoryItemId)
 			if err != nil {
 
-				teams_notifier.SendInventoryItemErrorToTeams(variant.Barcode, product.Id)
-				continue
+				teams_notifier.SendInventoryItemErrorToTeams(variant.Barcode, product.Id, err)
+				return err
+				//continue
 			}
 			if !isTracked {
 				// TODO: vi skal lave et eller andet tjek her på om det burde være tracked eller ej.
