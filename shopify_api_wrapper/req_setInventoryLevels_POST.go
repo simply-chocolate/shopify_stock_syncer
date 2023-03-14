@@ -7,7 +7,7 @@ import (
 )
 
 type SetInventoryLevelBody struct {
-	Location_id       int64
+	Location_id       json.Number
 	Inventory_item_id json.Number
 	Available         int
 }

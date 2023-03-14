@@ -1,12 +1,15 @@
 package shopify_api_wrapper
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type ShopifyApiInventoryItemResult struct {
 	InventoryItems []struct {
-		InventoryItemId int    `json:"id"`
-		Barcode         string `json:"sku"`
-		IsTracked       bool   `json:"tracked"`
+		InventoryItemId json.Number `json:"id"`
+		Barcode         string      `json:"sku"`
+		IsTracked       bool        `json:"tracked"`
 	} `json:"inventory_items"`
 }
 

@@ -1,8 +1,10 @@
 package shopify_api_wrapper
 
+import "encoding/json"
+
 type ShopifyApiGetInventoryIdResult struct {
 	Locations []struct {
-		LocationId int64 `json:"id"`
+		LocationId json.Number `json:"id"`
 	} `json:"locations"`
 }
 
