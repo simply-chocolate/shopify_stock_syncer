@@ -21,7 +21,7 @@ func SendNotInPCNErrorToTeams(barcode string, productId json.Number) {
 		"**Error**: Product was not found in PCN system, but is tracked in Shopify", barcode, productId)
 
 	if err := client.Send(webhook, card); err != nil {
-		fmt.Println("SendOrderErrorToTeams failed to send the error.")
+		fmt.Println("SendOrderErrorToTeams failed to send the error.", err)
 	}
 
 }

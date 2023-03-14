@@ -13,7 +13,6 @@ func HandleSyncStock() error {
 		Fields: []string{"id, variants"},
 		//Ids:    []string{"6748027912399"},
 		Status: "active",
-		Limit:  20,
 	})
 	if err != nil {
 		return err
@@ -30,6 +29,8 @@ func HandleSyncStock() error {
 	if err != nil {
 		return err
 	}
+
+	successBarcodes := []string{}
 
 	// Iterate over all products from shopify and all variants from each product.
 	for _, product := range ShopifyProducts.Body.Products {
@@ -64,10 +65,13 @@ func HandleSyncStock() error {
 
 					teams_notifier.SendUpdateInventoryLevelErrorToTeams(variant.Barcode, product.Id, pcnAvailableQuantity, err)
 					continue
+				} else {
+					successBarcodes = append(successBarcodes, variant.Barcode)
 				}
+
 			}
 		}
 	}
-
+	teams_notifier.NotifyTeamsSuccesCount(successBarcodes)
 	return nil
 }

@@ -22,7 +22,7 @@ func SendUpdateInventoryLevelErrorToTeams(barcode string, productId json.Number,
 		"**Error**: %v", barcode, quantityPCN, productId, err)
 
 	if err := client.Send(webhook, card); err != nil {
-		fmt.Println("SendOrderErrorToTeams failed to send the error.")
+		fmt.Println("SendOrderErrorToTeams failed to send the error.", err)
 	}
 
 }

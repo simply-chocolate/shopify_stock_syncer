@@ -21,7 +21,7 @@ func SendInventoryItemErrorToTeams(barcode string, productId json.Number) {
 		"**Error**: Could not find inventory item from the product variant", barcode, productId)
 
 	if err := client.Send(webhook, card); err != nil {
-		fmt.Println("SendOrderErrorToTeams failed to send the error.")
+		fmt.Println("SendOrderErrorToTeams failed to send the error.", err)
 	}
 
 }
