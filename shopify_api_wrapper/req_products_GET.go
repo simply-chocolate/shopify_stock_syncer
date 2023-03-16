@@ -9,8 +9,9 @@ import (
 
 type ShopifyApiGetProductsResult struct {
 	Products []struct {
-		Id       json.Number `json:"id"`
-		Variants []struct {
+		Id          json.Number `json:"id"`
+		ProductName string      `json:"title"`
+		Variants    []struct {
 			Barcode           string      `json:"barcode"`
 			Sku               string      `json:"sku"`
 			InventoryItemId   json.Number `json:"inventory_item_id"`

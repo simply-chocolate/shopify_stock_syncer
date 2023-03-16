@@ -3,6 +3,7 @@ package utils
 import (
 	"pcn_stock_syncer/shopify_api_wrapper"
 	"pcn_stock_syncer/teams_notifier"
+
 	"time"
 )
 
@@ -10,7 +11,7 @@ import (
 func HandleSyncStock() error {
 
 	ShopifyProducts, err := shopify_api_wrapper.ShopifyApiGetProducts_AllPages(shopify_api_wrapper.ShopifyApiQueryParams{
-		Fields: []string{"id, variants"},
+		Fields: []string{"id, title, variants"},
 		//Ids:    []string{"6748027912399"},
 		Status: "active",
 	})
@@ -30,7 +31,7 @@ func HandleSyncStock() error {
 		return err
 	}
 
-	successBarcodes := []string{}
+	successProducts := []teams_notifier.ProductAmounts{}
 
 	// Iterate over all products from shopify and all variants from each product.
 	for _, product := range ShopifyProducts.Body.Products {
@@ -67,12 +68,17 @@ func HandleSyncStock() error {
 					teams_notifier.SendUpdateInventoryLevelErrorToTeams(variant.Barcode, product.Id, pcnAvailableQuantity, err)
 					continue
 				} else {
-					successBarcodes = append(successBarcodes, variant.Barcode)
+					var productAmounts teams_notifier.ProductAmounts
+					productAmounts.Barcode = variant.Barcode
+					productAmounts.ProductName = product.ProductName
+					productAmounts.QuantityPCN = pcnAvailableQuantity
+					productAmounts.QuantityShopify = variant.InventoryQuantity
+					successProducts = append(successProducts, productAmounts)
 				}
 
 			}
 		}
 	}
-	teams_notifier.NotifyTeamsSuccesCount(successBarcodes)
+	teams_notifier.NotifyTeamsSuccesCount(successProducts)
 	return nil
 }
