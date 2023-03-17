@@ -35,7 +35,7 @@ func NotifyTeamsSuccesCount(products []ProductAmounts) {
 				productName = productName[0:15]
 			}
 
-			productsString += fmt.Sprintf("%v - %v - %v - %v", product.Barcode, productName, product.QuantityShopify, product.QuantityPCN)
+			productsString += fmt.Sprintf("%v - %v - %v - %v<BR/>", product.Barcode, productName, product.QuantityShopify, product.QuantityPCN)
 		}
 		card.Text = fmt.Sprintf("Script has finished and these %v barcodes were updated:.<BR/> "+productsString, len(products))
 	}
