@@ -28,16 +28,14 @@ func NotifyTeamsSuccesCount(products []ProductAmounts) {
 			"If not, check the other messages for detalied error messages."
 	} else {
 		card.Title = "Successfully updated inventory in Shopify"
-		productsString := "Barcode - Name - Amount Shopify - Amount PCN<BR/>"
+		productsString := "Barcode - Name - Amount Shopify - Amount PCN <BR/>"
 		for _, product := range products {
 			productName := strings.Split(product.ProductName, "|")[0]
 			if len(productName) > 15 {
 				productName = productName[0:15]
 			}
 
-			productsString += fmt.Sprintf(`
-			%v - %v - %v - %v 
-			`, product.Barcode, productName, product.QuantityShopify, product.QuantityPCN)
+			productsString += fmt.Sprintf("%v - %v - %v - %v", product.Barcode, productName, product.QuantityShopify, product.QuantityPCN)
 		}
 		card.Text = fmt.Sprintf("Script has finished and these %v barcodes were updated:.<BR/> "+productsString, len(products))
 	}
