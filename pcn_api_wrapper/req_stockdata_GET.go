@@ -10,6 +10,7 @@ type PcnApiGetStockDataResult struct {
 	Results []struct {
 		Barcode   string `json:"barcode"`
 		Available int    `json:"instock"`
+		OnOrder   int    `json:"onorder"`
 	} `json:"results"`
 }
 

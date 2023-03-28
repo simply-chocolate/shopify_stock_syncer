@@ -12,7 +12,7 @@ func PcnApiGetStockData() (map[string]int, error) {
 	// Create a map of barcodes to available stock.
 	BarcodeToAvailableStock := make(map[string]int)
 	for _, product := range PcnProducts.Body.Results {
-		BarcodeToAvailableStock[product.Barcode] = product.Available
+		BarcodeToAvailableStock[product.Barcode] = product.Available - product.OnOrder
 	}
 
 	return BarcodeToAvailableStock, nil
