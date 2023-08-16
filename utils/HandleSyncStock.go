@@ -23,6 +23,7 @@ func HandleSyncStock() error {
 	if err != nil {
 		return err
 	}
+	PcnBundleProducts, err := PcnApiGetBundleProducts()
 
 	ShopifyInventoryId, err := shopify_api_wrapper.ShopifyApiGetInventoryId(shopify_api_wrapper.ShopifyApiQueryParams{
 		Fields: []string{"id,name,address1"},
@@ -52,7 +53,11 @@ func HandleSyncStock() error {
 
 			pcnAvailableQuantity, exists := PcnProducts[variant.Barcode]
 			if !exists {
-				teams_notifier.SendNotInPCNErrorToTeams(variant.Barcode, product.Id)
+				_, exists := PcnBundleProducts[variant.Barcode]
+				if !exists {
+					teams_notifier.SendNotInPCNErrorToTeams(variant.Barcode, product.Id)
+				}
+
 				continue
 			} else {
 				if pcnAvailableQuantity == variant.InventoryQuantity {

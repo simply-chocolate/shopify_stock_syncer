@@ -22,7 +22,7 @@ type PcnApiGetStockDataReturn struct {
 func PcnApiGetStockData() (PcnApiGetStockDataReturn, error) {
 	resp, err := GetPcnApiBaseClient().
 		R().
-		SetResult(PcnApiGetStockDataResult{}).
+		SetSuccessResult(PcnApiGetStockDataResult{}).
 		SetBody(map[string]interface{}{
 			"cid":        os.Getenv("PCN_CID"),
 			"olsuser":    os.Getenv("PCN_OLSUSER"),
@@ -36,7 +36,7 @@ func PcnApiGetStockData() (PcnApiGetStockDataReturn, error) {
 	}
 
 	return PcnApiGetStockDataReturn{
-		Body: resp.Result().(*PcnApiGetStockDataResult),
+		Body: resp.SuccessResult().(*PcnApiGetStockDataResult),
 	}, nil
 
 }

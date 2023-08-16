@@ -1,6 +1,10 @@
 package utils
 
-import "pcn_stock_syncer/pcn_api_wrapper"
+import (
+	"fmt"
+	"pcn_stock_syncer/pcn_api_wrapper"
+	"time"
+)
 
 // Get all the stockdata from PCN and return a map of barcodes to available stock.
 func PcnApiGetStockData() (map[string]int, error) {
@@ -16,4 +20,29 @@ func PcnApiGetStockData() (map[string]int, error) {
 	}
 
 	return BarcodeToAvailableStock, nil
+}
+
+func PcnApiGetBundleProducts() (map[string]string, error) {
+	bundleProducts, statusCode, err := pcn_api_wrapper.PcnApiBundleProductList()
+
+	if err != nil {
+		fmt.Println(err)
+
+		if statusCode == 403 {
+			time.Sleep(6 * time.Minute)
+			bundleProducts, _, err = pcn_api_wrapper.PcnApiBundleProductList()
+			if err != nil {
+				fmt.Println(err)
+				return map[string]string{}, err
+			}
+		}
+	}
+
+	BundleProductList := make(map[string]string)
+
+	for _, bundleProduct := range bundleProducts.Body.Results {
+		BundleProductList[bundleProduct.BundleCode] = ""
+	}
+
+	return BundleProductList, nil
 }
