@@ -17,6 +17,15 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	fmt.Printf("%v: Started the Script \n", time.Now().Format("2006-01-02 15:04:05"))
+
+	err = utils.HandleSyncStock()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%v: Success \n", time.Now().Format("2006-01-02 15:04:05"))
+
 	fmt.Printf("%v: Started the Cron Scheduler", time.Now().UTC().Format("2006-01-02 15:04:05"))
 
 	s := gocron.NewScheduler(time.UTC)
