@@ -18,6 +18,7 @@ type ShopifyApiInventoryItemReturn struct {
 }
 
 func ShopifyApiInventoryItem(params map[string]string) (ShopifyApiInventoryItemReturn, error) {
+
 	resp, err := GetShopifyApiBaseClient().
 		R().
 		SetQueryParams(params).
@@ -25,6 +26,9 @@ func ShopifyApiInventoryItem(params map[string]string) (ShopifyApiInventoryItemR
 		Get("inventory_items.json")
 	if err != nil {
 		return ShopifyApiInventoryItemReturn{}, err
+	}
+	if resp == nil {
+		return ShopifyApiInventoryItemReturn{}, fmt.Errorf("resp is nil")
 	}
 
 	return ShopifyApiInventoryItemReturn{
