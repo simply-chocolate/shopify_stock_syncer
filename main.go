@@ -21,7 +21,7 @@ func main() {
 
 	err = utils.HandleSyncStock()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 
 	fmt.Printf("%v: Success \n", time.Now().Format("2006-01-02 15:04:05"))
@@ -34,7 +34,7 @@ func main() {
 
 		err = utils.HandleSyncStock()
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 		fmt.Printf("%v: Success \n", time.Now().Format("2006-01-02 15:04:05"))
 
