@@ -6,7 +6,9 @@ The purpose of this script is to always have the latest inventory amounts update
 It is supposed to run every 2 hours between 07:00 and 17:00 and sends error messages to a dedicated channels in teams.
 
 Right now the known issues are:
-  - Script sometimes crashes with the error : `panic: interface conversion: interface {} is nil, not *shopify_api_wrapper.ShopifyApiInventoryItemResult`. happens at `C:/Projects/shopify_stock_syncer/shopify_api_wrapper/req_inventoryitem_GET.go:35`
+  - Script sometimes crashes with the error : `panic: interface conversion: interface {} is nil, not *shopify_api_wrapper.ShopifyApiInventoryItemResult`
+    happens at `C:/Projects/shopify_stock_syncer/shopify_api_wrapper/req_inventoryitem_GET.go:35`
+    Right now a workaround has been created, so it fmt.Println the error instead of log.Fatal
 
 Known usererrors: 
   - Product is not tracked but should be tracked
