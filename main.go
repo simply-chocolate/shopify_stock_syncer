@@ -7,7 +7,6 @@ import (
 
 	"pcn_stock_syncer/utils"
 
-	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
 )
 
