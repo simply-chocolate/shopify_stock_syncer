@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"time"
 )
 
 type PcnApiGetStockDataResult struct {
@@ -32,6 +33,16 @@ func PcnApiGetStockData() (PcnApiGetStockDataReturn, error) {
 		}).Post("stocklist")
 	if err != nil {
 		fmt.Println(err)
+		return PcnApiGetStockDataReturn{}, errors.New("error getting the stock data fro Pcn API")
+	}
+	if resp.StatusCode == 403 {
+		// wait 5 minutes and try again
+		fmt.Println(resp)
+		fmt.Printf("%v: 403 error waiting 5 minutes\n", time.Now())
+		time.Sleep(5 * time.Minute)
+		return PcnApiGetStockData()
+
+	} else if resp.StatusCode != 200 {
 		return PcnApiGetStockDataReturn{}, errors.New("error getting the stock data fro Pcn API")
 	}
 
