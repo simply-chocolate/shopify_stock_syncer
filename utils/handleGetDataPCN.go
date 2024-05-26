@@ -37,7 +37,6 @@ func PcnApiGetBundleProducts() (map[string]string, error) {
 			}
 		}
 	}
-
 	BundleProductList := make(map[string]string)
 
 	for _, bundleProduct := range bundleProducts.Body.Results {

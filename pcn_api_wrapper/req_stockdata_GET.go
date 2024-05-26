@@ -31,6 +31,7 @@ func PcnApiGetStockData() (PcnApiGetStockDataReturn, error) {
 			"filter":     "all",
 			"maxresults": 1000,
 		}).Post("stocklist")
+
 	if err != nil {
 		fmt.Println(err)
 		return PcnApiGetStockDataReturn{}, errors.New("error getting the stock data fro Pcn API")

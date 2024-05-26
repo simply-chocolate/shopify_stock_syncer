@@ -6,11 +6,11 @@ import (
 )
 
 type ShopifyApiInventoryItemResult struct {
-	InventoryItems []struct {
+	InventoryItem struct {
 		InventoryItemId json.Number `json:"id"`
 		Barcode         string      `json:"sku"`
 		IsTracked       bool        `json:"tracked"`
-	} `json:"inventory_items"`
+	} `json:"inventory_item"`
 }
 
 type ShopifyApiInventoryItemReturn struct {
@@ -45,13 +45,11 @@ created by github.com/go-co-op/gocron.(*executor).runJob
 exit status 2
 */
 
-func ShopifyApiInventoryItem(params map[string]string) (ShopifyApiInventoryItemReturn, error) {
-
+func ShopifyApiInventoryItem(inventoryItemId json.Number) (ShopifyApiInventoryItemReturn, error) {
 	resp, err := GetShopifyApiBaseClient().
 		R().
-		SetQueryParams(params).
 		SetSuccessResult(ShopifyApiInventoryItemResult{}).
-		Get("inventory_items.json")
+		Get(fmt.Sprintf("inventory_items/%v.json", inventoryItemId))
 	if err != nil {
 		return ShopifyApiInventoryItemReturn{}, err
 	}
